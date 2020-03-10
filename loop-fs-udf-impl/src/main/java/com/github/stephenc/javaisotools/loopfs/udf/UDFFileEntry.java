@@ -93,6 +93,11 @@ public class UDFFileEntry implements FileEntry
 		return this.icb.icbTag.fileType == Constants.FE_TYPE_LINK;
 	}
 
+	public boolean isSymlink() {
+		// Not implemented
+		return false;
+	}
+
 	public boolean isDirectory() {
 		return this.icb.icbTag.fileType == Constants.FE_TYPE_DIRECTORY;
 	}

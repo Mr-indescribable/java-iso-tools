@@ -74,6 +74,11 @@ public final class Iso9660FileEntry implements FileEntry {
     // This list contains all RRIP NM fields
     private final List<RripFieldNM> rrnmFields = new ArrayList<RripFieldNM>();
 
+    // This list contains all RRIP SL fields
+    private final List<RripFieldSL> rrslFields = new ArrayList<RripFieldSL>();
+
+    private RripFieldPX rrpxField = null;
+
     //private final int extAttributeLength;
     //private final int fileUnitSize;
     //private final int interleaveSize;
@@ -117,7 +122,7 @@ public final class Iso9660FileEntry implements FileEntry {
 
         this.suParsed = parseSu;
 
-        if (this.suParsed) {
+        if (parseSu) {
             // Util.getBytes will not minus startPos by 1.
             int suStartPos = offset + 33 + this.fidLength;
 
@@ -172,12 +177,14 @@ public final class Iso9660FileEntry implements FileEntry {
                     break;
                 case Constants.RR_FIELD_ID_PX:
                     field = new RripFieldPX(suBlock, suBp);
+                    this.rrpxField = (RripFieldPX) field;
                     break;
                 case Constants.RR_FIELD_ID_PN:
                     field = new RripFieldPN(suBlock, suBp);
                     break;
                 case Constants.RR_FIELD_ID_SL:
                     field = new RripFieldSL(suBlock, suBp);
+                    this.rrslFields.add( (RripFieldSL) field );
                     break;
                 case Constants.RR_FIELD_ID_NM:
                     field = new RripFieldNM(suBlock, suBp);
@@ -291,6 +298,35 @@ public final class Iso9660FileEntry implements FileEntry {
 
     public boolean isDirectory() {
         return (this.flags & 0x03) != 0;
+    }
+
+    public boolean isSymlink() {
+        return this.rrpxField.isSymlink();
+    }
+
+    public String getSymlinkPath() {
+        if (! this.isSymlink()) {
+            throw new RuntimeException("This is not a symbolic link");
+        }
+
+        String path = "";
+        boolean firstTime = true;
+
+        for (RripFieldSL rrsl: this.rrslFields) {
+            if (! firstTime) {
+                path += "/";
+            }
+
+            path += rrsl.getPathname();
+
+            if (! rrsl.isContinuous()) {
+                break;
+            }
+
+            firstTime = false;
+        }
+
+        return path;
     }
 
     public long getSize() {

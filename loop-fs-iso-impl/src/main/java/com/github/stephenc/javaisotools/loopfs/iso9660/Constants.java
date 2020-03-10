@@ -75,4 +75,28 @@ public interface Constants {
      * (SUSP specification section 5.3 [4])
      */
     int SUSP_CHECK_BYTES = 0xBEEF;
+
+	/**
+	 * POSIX file modes, see RRIP specification section 4.1.1
+	 */
+	long POSIX_FM_S_IRUSR  = 0000400;
+	long POSIX_FM_S_IWUSR  = 0000200;
+	long POSIX_FM_S_IXUSR  = 0000100;
+	long POSIX_FM_S_IRGRP  = 0000040;
+	long POSIX_FM_S_IWGRP  = 0000020;
+	long POSIX_FM_S_IXGRP  = 0000010;
+	long POSIX_FM_S_IROTH  = 0000004;
+	long POSIX_FM_S_IWOTH  = 0000002;
+	long POSIX_FM_S_IXOTH  = 0000001;
+	long POSIX_FM_S_ISUID  = 0004000;
+	long POSIX_FM_S_ISGID  = 0002000;
+	long POSIX_FM_S_ENFMT  = 0002000;
+	long POSIX_FM_S_ISVTX  = 0001000;
+	long POSIX_FM_S_IFSOCK = 0140000;
+	long POSIX_FM_S_IFLNK  = 0120000;
+	long POSIX_FM_S_IFREG  = 0100000;
+	long POSIX_FM_S_IFBLK  = 0060000;
+	long POSIX_FM_S_IFCHR  = 0020000;
+	long POSIX_FM_S_IFDIR  = 0040000;
+	long POSIX_FM_S_IFIFO  = 0010000;
 }

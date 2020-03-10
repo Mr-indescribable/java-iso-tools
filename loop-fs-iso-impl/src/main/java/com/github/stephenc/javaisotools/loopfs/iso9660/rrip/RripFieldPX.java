@@ -32,6 +32,9 @@ import com.github.stephenc.javaisotools.loopfs.iso9660.susp.exceptions.UnknownSu
  */
 public class RripFieldPX extends SuspField
 {
+	// currently, I only need this one attribute, maybe I'll add others later
+	private long posixFileMode;
+
 	public RripFieldPX() {
 	}
 
@@ -48,5 +51,12 @@ public class RripFieldPX extends SuspField
 	public void deserialize(byte[] block, int bp) throws InvalidSuspField {
 		this.deserializeHeader(block, bp);
 		this.verifyId();
+
+		this.posixFileMode = Util.getUInt32LE(block, bp + 4);
+	}
+
+	public boolean isSymlink() {
+		return (this.posixFileMode & Constants.POSIX_FM_S_IFLNK)
+				== Constants.POSIX_FM_S_IFLNK;
 	}
 }

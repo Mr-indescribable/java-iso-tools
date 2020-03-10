@@ -54,6 +54,13 @@ public interface FileEntry {
     boolean isDirectory();
 
     /**
+     * Returns whether this entry represents a symbolic link.
+     *
+     * @return true if this entry represents a symbolic link, otherwise false.
+     */
+    boolean isSymlink();
+
+    /**
      * Returns the size, in bytes, of the data represented by this entry.
      *
      * @return the entry size
